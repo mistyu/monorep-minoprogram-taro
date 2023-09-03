@@ -7,6 +7,7 @@
     <view class="btn">
       <nut-button type="primary" @click="handleClick('text', msg2, true)">点我</nut-button>
     </view>
+    <c-nut-drag></c-nut-drag>
     <nut-toast :msg="msg2" v-model:visible="show" :type="type" :cover="cover"/>
   </view>
 </template>
@@ -14,10 +15,12 @@
 <script>
 import { reactive, toRefs } from 'vue';
 import { Dongdong } from '@nutui/icons-vue-taro';
+import { cNutDrag } from '@casamiel/mini-components';
 export default {
   name: 'Index',
   components: {
-    Dongdong
+    Dongdong,
+    cNutDrag
   },
   setup() {
     const state = reactive({
