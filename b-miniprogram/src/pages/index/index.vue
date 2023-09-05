@@ -1,53 +1,160 @@
 <template>
-  <view class="index">
-    <view>
-      <img src="" alt="">
-    </view>
-    {{ msg }} <Dongdong />
-    <view class="btn">
-      <nut-button type="primary" @click="handleClick('text', msg2, true)">点我</nut-button>
-    </view>
-    <nut-toast :msg="msg2" v-model:visible="show" :type="type" :cover="cover"/>
-  </view>
+  <div class="index">
+    <div class="index-header">
+      <img
+        src="https://img14.360buyimg.com/imagetools/jfs/t1/167902/2/8762/791358/603742d7E9b4275e3/e09d8f9a8bf4c0ef.png"
+        alt=""
+        srcset=""
+      />
+      <div class="info">
+        <h1>NutUI</h1>
+        <p>京东风格的轻量级小程序组件库</p>
+      </div>
+    </div>
+    <div class="index-components">
+      <ol v-for="_nav in nav" :key="_nav.name">
+        <li>{{ _nav.name }}</li>
+        <ul>
+          <template v-for="_package in reorder(_nav.packages)" :key="_package">
+            <li v-if="_package.show && _package.taro && _package.exportEmpty !== false">
+              <a @click="navigateTo(_package.name, _nav.enName)">
+                {{ _package.name }}
+                &nbsp;&nbsp;
+                {{ _package.cName }}
+              </a>
+              <Right size="14px" color="#979797" name="right"></Right>
+            </li>
+          </template>
+        </ul>
+      </ol>
+    </div>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 import { reactive, toRefs } from 'vue';
-import { Dongdong } from '@nutui/icons-vue-taro';
+import config from '../../config.json';
+import Taro from '@tarojs/taro';
+import { Right } from '@nutui/icons-vue-taro';
 export default {
-  name: 'Index',
-  components: {
-    Dongdong
+  name: 'NutUI',
+  components: { Right },
+  onShareAppMessage() {
+    return {
+      title: '',
+      path: '/pages/index/index',
+      success: function (res) {
+        console.log(res, 'res')
+      }
+    };
   },
+  // onShareTimeline() {
+  //   return {
+  //     title: '京东风格的轻量级小程序组件库',
+  // 	  success: function(res) {}
+  //   }
+  // },
   setup() {
     const state = reactive({
-      msg: '欢迎使用 NutUI4.0 开发小程序',
-      msg2: '你成功了～',
-      type: 'text',
-      show: false,
-      cover: false
+      nav: config.nav
     });
 
-    const handleClick = (type, msg, cover = false) => {
-      state.show = true;
-      state.msg2 = msg;
-      state.type = type;
-      state.cover = cover;
+    const reorder = (packages: any) => {
+      return packages.sort(function (x: any, y: any) {
+        return x['name'].toLowerCase().localeCompare(y['name'].toLowerCase());
+      });
+    };
+
+    const navigateTo = (name, enName) => {
+      Taro.navigateTo({
+        url: `/${enName}/pages/${name.toLowerCase()}/index`
+      });
     };
 
     return {
       ...toRefs(state),
-      handleClick
-    }
+      reorder,
+      navigateTo
+    };
   }
-}
+};
 </script>
-
 <style lang="scss">
 .index {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  height: 100%;
+  width: 100%;
+  // padding-top: 30px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: 0 34px;
+    height: 117px;
+    > img {
+      width: 67px;
+      height: 67px;
+      margin-right: 18px;
+      flex-shrink: 0;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      h1 {
+        height: 48px;
+        line-height: 48px;
+        font-size: 34px;
+        color: rgba(51, 51, 51, 1);
+        font-weight: 500;
+      }
+      p {
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+        color: rgba(154, 155, 157, 1);
+      }
+    }
+  }
+  &-components {
+    background: #f7f8fa;
+    border-radius: 30px 30px 0 0;
+    overflow: hidden;
+    padding: 30px 25px;
+    > ol {
+      margin-bottom: 17px;
+      > li {
+        line-height: 20px;
+        font-size: 14px;
+        color: rgba(144, 156, 164, 1);
+        margin-bottom: 10px;
+      }
+      > ul {
+        li {
+          display: flex;
+          align-items: center;
+          padding: 0 24px;
+          width: 100%;
+          height: 45px;
+          line-height: 45px;
+          background: rgba(255, 255, 255, 1);
+          border-radius: 22px;
+          box-shadow: 0px 1px 4px 0px rgba(102, 102, 102, 0.06);
+          margin-bottom: 13px;
+          box-sizing: border-box;
+          a {
+            width: 100%;
+            height: 100%;
+            font-size: 15px;
+            font-weight: bold;
+            display: block;
+            color: rgba(51, 51, 51, 1);
+          }
+        }
+      }
+    }
+    ol,
+    li {
+      list-style: none;
+    }
+  }
 }
 </style>

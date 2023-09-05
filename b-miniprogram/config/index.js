@@ -4,12 +4,7 @@ import NutUIResolver from '@nutui/nutui-taro/dist/resolver';
 const config = {
   projectName: 'b-miniprogram',
   date: '2023-9-3',
-  designWidth (input) {
-    if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
-      return 375
-    }
-    return 750
-  },
+  designWidth: 375,
   deviceRatio: {
     640: 2.34 / 2,
     750: 1,
