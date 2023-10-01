@@ -89,13 +89,13 @@ importers:
       vue-loader: 17.2.2_n2y3d5jg6tm7onhr7lu3w7kkzq
       webpack: 5.88.2
 
-  a-miniprogram:
+  apps/a-miniprogram:
     specifiers:
       '@casamiel/mini-components': workspace:*
     dependencies:
-      '@casamiel/mini-components': link:../packages/components
+      '@casamiel/mini-components': link:../../packages/components
 
-  b-miniprogram:
+  apps/b-miniprogram:
     specifiers: {}
 
   packages/components:

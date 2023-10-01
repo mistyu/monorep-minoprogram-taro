@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build:all": "concurrently \"pnpm build:a-miniprogram\" \"pnpm build:b-miniprogram\"",
-    "build:a": "pnpm run -C a-miniprogram build:weapp",
-    "build:b": "pnpm run -C b-miniprogram build:weapp"
+    "build:a": "pnpm run -C apps/a-miniprogram build:weapp",
+    "build:b": "pnpm run -C b-miniprogram build:weapp",
+    "test:components": "pnpm run -C packages/components test"
   },
   "keywords": [],
   "author": "",
